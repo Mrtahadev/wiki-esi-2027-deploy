@@ -33,16 +33,44 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Internship = void 0;
 const mongoose_1 = __importStar(require("mongoose"));
 const internshipSchema = new mongoose_1.Schema({
-    title: { type: String, required: true },
-    company: { type: String, required: true },
-    location: { type: String, required: true },
-    description: { type: String, required: true },
-    requirements: [{ type: String }],
-    applicationUrl: { type: String, required: true },
-    postedDate: { type: Date, default: Date.now },
-    deadline: { type: Date, required: true },
-    createdBy: { type: mongoose_1.Schema.Types.ObjectId, ref: 'User', required: true }
+    title: {
+        type: String,
+        required: true
+    },
+    company: {
+        type: String,
+        required: true
+    },
+    location: {
+        type: String,
+        required: true
+    },
+    description: {
+        type: String,
+        required: true
+    },
+    requirements: [{
+            type: String
+        }],
+    applicationUrl: {
+        type: String,
+        required: true
+    },
+    userId: {
+        type: mongoose_1.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
+    deadline: {
+        type: Date,
+        required: true
+    }
 });
-exports.default = mongoose_1.default.model('Internship', internshipSchema);
+exports.Internship = mongoose_1.default.model('Internship', internshipSchema);

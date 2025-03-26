@@ -33,12 +33,12 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.WikiPage = void 0;
 const mongoose_1 = __importStar(require("mongoose"));
-const WikiPageSchema = new mongoose_1.Schema({
+const wikiPageSchema = new mongoose_1.Schema({
     title: {
         type: String,
-        required: true,
-        trim: true
+        required: true
     },
     content: {
         type: String,
@@ -47,35 +47,26 @@ const WikiPageSchema = new mongoose_1.Schema({
     slug: {
         type: String,
         required: true,
-        unique: true,
-        trim: true,
-        lowercase: true
+        unique: true
     },
-    tags: [{
-            type: String,
-            trim: true
-        }],
-    createdBy: {
+    userId: {
         type: mongoose_1.Schema.Types.ObjectId,
         ref: 'User',
         required: true
     },
-    lastEditedBy: {
-        type: mongoose_1.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
+    createdAt: {
+        type: Date,
+        default: Date.now
     },
-    contributors: [{
-            type: mongoose_1.Schema.Types.ObjectId,
-            ref: 'User'
-        }]
-}, {
-    timestamps: true
+    updatedAt: {
+        type: Date,
+        default: Date.now
+    }
 });
 // Create text index for search functionality
-WikiPageSchema.index({ title: 'text', content: 'text', tags: 'text' });
+wikiPageSchema.index({ title: 'text', content: 'text' });
 // Generate slug from title
-WikiPageSchema.pre('save', function (next) {
+wikiPageSchema.pre('save', function (next) {
     if (this.isModified('title')) {
         this.slug = this.title
             .toLowerCase()
@@ -83,6 +74,7 @@ WikiPageSchema.pre('save', function (next) {
             .replace(/[\s_-]+/g, '-')
             .replace(/^-+|-+$/g, '');
     }
+    this.updatedAt = new Date();
     next();
 });
-exports.default = mongoose_1.default.model('WikiPage', WikiPageSchema);
+exports.WikiPage = mongoose_1.default.model('WikiPage', wikiPageSchema);

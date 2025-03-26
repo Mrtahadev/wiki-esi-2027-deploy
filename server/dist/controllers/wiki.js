@@ -118,7 +118,7 @@ const deleteWikiPage = (req, res) => __awaiter(void 0, void 0, void 0, function*
         if (!wikiPage) {
             return res.status(404).json({ message: 'Wiki page not found' });
         }
-        yield wikiPage.remove();
+        yield wikiPage.deleteOne();
         res.json({ message: 'Wiki page deleted successfully' });
     }
     catch (error) {

@@ -12,63 +12,58 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = __importDefault(require("express"));
+const express_1 = require("express");
 const auth_1 = require("../middleware/auth");
-const router = express_1.default.Router();
-// In-memory storage for chat messages (replace with database in production)
-const chatMessages = [];
+const ChatMessage_1 = __importDefault(require("../models/ChatMessage"));
+const router = (0, express_1.Router)();
 // Get chat history
-router.get('/history', auth_1.authenticateToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.get('/history', auth_1.authenticateToken, (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
-        res.json(chatMessages);
+        if (!((_a = req.user) === null || _a === void 0 ? void 0 : _a.id)) {
+            res.status(401).json({ message: 'Unauthorized' });
+            return;
+        }
+        const messages = yield ChatMessage_1.default.find({ userId: req.user.id }).sort({ createdAt: -1 });
+        res.json(messages);
     }
     catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
+        next(error);
     }
 }));
 // Send a message
-router.post('/message', auth_1.authenticateToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.post('/message', auth_1.authenticateToken, (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     try {
-        const { message } = req.body;
-        const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
-        if (!message || !userId) {
-            res.status(400).json({ error: 'Message and user ID are required' });
+        if (!((_a = req.user) === null || _a === void 0 ? void 0 : _a.id)) {
+            res.status(401).json({ message: 'Unauthorized' });
             return;
         }
-        const newMessage = {
-            message,
-            timestamp: new Date(),
-            userId
-        };
-        chatMessages.push(newMessage);
-        // Mock bot response
-        const botResponse = {
-            message: 'This is a mock response from the bot.',
-            timestamp: new Date(),
-            userId: 'bot'
-        };
-        chatMessages.push(botResponse);
-        res.json({ userMessage: newMessage, botResponse });
+        const message = new ChatMessage_1.default({
+            content: req.body.content,
+            isUser: req.body.isUser,
+            userId: req.user.id
+        });
+        yield message.save();
+        res.status(201).json(message);
     }
     catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
+        next(error);
     }
 }));
 // Clear chat history (admin only)
-router.delete('/clear', auth_1.authenticateToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.delete('/clear', auth_1.authenticateToken, (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     try {
-        const userRole = (_a = req.user) === null || _a === void 0 ? void 0 : _a.role;
-        if (userRole !== 'admin') {
-            res.status(403).json({ error: 'Unauthorized' });
+        if (!((_a = req.user) === null || _a === void 0 ? void 0 : _a.id)) {
+            res.status(401).json({ message: 'Unauthorized' });
             return;
         }
-        chatMessages.length = 0;
-        res.json({ message: 'Chat history cleared successfully' });
+        yield ChatMessage_1.default.deleteMany({ userId: req.user.id });
+        res.json({ message: 'Chat history cleared' });
     }
     catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
+        next(error);
     }
 }));
 exports.default = router;
