@@ -1,5 +1,10 @@
 // Application Configuration
-export const API_URL = 'http://localhost:5001';
+// Determine API URL based on environment
+const isDevelopment = process.env.NODE_ENV === 'development';
+export const API_URL = isDevelopment 
+  ? 'http://localhost:5001' 
+  : 'https://your-api-server-url.com';  // Replace with your actual production API URL when available
+
 export const APP_NAME = 'Wiki ESI 2027';
 
 // Feature Flags

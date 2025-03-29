@@ -24,6 +24,17 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
+    <script>
+      // Handle GitHub Pages routing
+      (function() {
+        var path = window.location.pathname;
+        var baseHref = '/wiki-esi-2027-deploy/';
+        
+        if (path !== baseHref && !path.startsWith(baseHref)) {
+          window.location.href = baseHref;
+        }
+      })();
+    </script>
     <title>React App</title>
   </head>
   <body>
