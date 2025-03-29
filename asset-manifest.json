@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/wiki-esi-2027-deploy/static/css/main.6af87d5a.css",
+    "main.js": "/wiki-esi-2027-deploy/static/js/main.8e10ceea.js",
+    "index.html": "/wiki-esi-2027-deploy/index.html",
+    "main.6af87d5a.css.map": "/wiki-esi-2027-deploy/static/css/main.6af87d5a.css.map",
+    "main.8e10ceea.js.map": "/wiki-esi-2027-deploy/static/js/main.8e10ceea.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.6af87d5a.css",
+    "static/js/main.8e10ceea.js"
+  ]
+}
