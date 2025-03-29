@@ -25,17 +25,26 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <script>
-      // Handle GitHub Pages routing
+      // Single Page App GitHub Pages redirect script
+      // https://github.com/rafgraph/spa-github-pages
       (function() {
-        var path = window.location.pathname;
-        var baseHref = '/wiki-esi-2027-deploy/';
-        
-        if (path !== baseHref && !path.startsWith(baseHref)) {
-          window.location.href = baseHref;
+        // Check if this is a redirect from GitHub Pages
+        if (window.location.search.includes('?p=/')) {
+          // Redirect to the path specified in the query string
+          var redirectPath = window.location.search.split('?p=/')[1];
+          window.history.replaceState(null, null, '/#/' + redirectPath);
+        } else if (
+          window.location.pathname.indexOf('/wiki-esi-2027-deploy') === 0 && 
+          window.location.pathname !== '/wiki-esi-2027-deploy/' && 
+          window.location.pathname !== '/wiki-esi-2027-deploy/index.html'
+        ) {
+          // Handle direct URL access by redirecting to the homepage with hash routing
+          var path = window.location.pathname.replace('/wiki-esi-2027-deploy', '');
+          window.location.href = '/wiki-esi-2027-deploy/#' + path;
         }
       })();
     </script>
-    <title>React App</title>
+    <title>Wiki ESI 2027</title>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

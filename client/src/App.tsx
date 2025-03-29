@@ -35,7 +35,7 @@ const App: React.FC = () => {
   return (
     <AuthProvider>
       <ThemeProvider>
-        <Router>
+        <Router basename="/">
           <div className="min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors duration-200">
             <NavBar />
             <main className="p-4">
