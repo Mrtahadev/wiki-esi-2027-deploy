@@ -4,7 +4,7 @@ import { authenticateToken, AuthRequest } from '../middleware/auth';
 const router = Router();
 
 // Get all internships
-router.get('/', (req: AuthRequest, res: Response) => {
+router.get('/', (req: AuthRequest, res: Response): void => {
   res.json([
     {
       id: '1',
@@ -21,7 +21,7 @@ router.get('/', (req: AuthRequest, res: Response) => {
 });
 
 // Get a specific internship by ID
-router.get('/:id', (req: AuthRequest, res: Response) => {
+router.get('/:id', (req: AuthRequest, res: Response): void => {
   const { id } = req.params;
   res.json({
     id,
@@ -37,9 +37,10 @@ router.get('/:id', (req: AuthRequest, res: Response) => {
 });
 
 // Create new internship (admin only)
-router.post('/', authenticateToken, (req: AuthRequest, res: Response) => {
+router.post('/', authenticateToken, (req: AuthRequest, res: Response): void => {
   if (req.user?.role !== 'admin') {
-    return res.status(403).json({ message: 'Access denied' });
+    res.status(403).json({ message: 'Access denied' });
+    return;
   }
   
   res.status(201).json({ 
@@ -50,9 +51,10 @@ router.post('/', authenticateToken, (req: AuthRequest, res: Response) => {
 });
 
 // Update internship
-router.put('/:id', authenticateToken, (req: AuthRequest, res: Response) => {
+router.put('/:id', authenticateToken, (req: AuthRequest, res: Response): void => {
   if (req.user?.role !== 'admin') {
-    return res.status(403).json({ message: 'Access denied' });
+    res.status(403).json({ message: 'Access denied' });
+    return;
   }
   
   const { id } = req.params;
@@ -64,9 +66,10 @@ router.put('/:id', authenticateToken, (req: AuthRequest, res: Response) => {
 });
 
 // Delete internship
-router.delete('/:id', authenticateToken, (req: AuthRequest, res: Response) => {
+router.delete('/:id', authenticateToken, (req: AuthRequest, res: Response): void => {
   if (req.user?.role !== 'admin') {
-    return res.status(403).json({ message: 'Access denied' });
+    res.status(403).json({ message: 'Access denied' });
+    return;
   }
   
   res.status(200).json({ message: 'Internship deleted successfully' });

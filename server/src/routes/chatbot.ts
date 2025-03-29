@@ -20,7 +20,7 @@ const router = express.Router();
 const chatMessages: ChatMessage[] = [];
 
 // Get chat history
-router.get('/history', authenticateToken, async (req: AuthRequest, res: Response) => {
+router.get('/history', authenticateToken, async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     res.json(chatMessages);
   } catch (error) {
@@ -29,7 +29,7 @@ router.get('/history', authenticateToken, async (req: AuthRequest, res: Response
 });
 
 // Send a message
-router.post('/message', authenticateToken, async (req: AuthRequest, res: Response) => {
+router.post('/message', authenticateToken, async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const { message } = req.body;
     const userId = req.user?.id;
@@ -63,7 +63,7 @@ router.post('/message', authenticateToken, async (req: AuthRequest, res: Respons
 });
 
 // Clear chat history (admin only)
-router.delete('/clear', authenticateToken, async (req: AuthRequest, res: Response) => {
+router.delete('/clear', authenticateToken, async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const userRole = req.user?.role;
     
