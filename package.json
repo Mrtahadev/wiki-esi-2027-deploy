@@ -1,12 +1,11 @@
 {
   "devDependencies": {
     "@craco/craco": "^7.1.0"
+  },
+  "homepage": "https://mrtahadev.github.io/wiki-esi-2027-deploy",
+  "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
+    // ... other scripts
   }
-
-     "homepage": "https://mrtahadev.github.io/wiki-esi-2027-deploy",
-     "scripts": {
-       "predeploy": "npm run build",
-       "deploy": "gh-pages -d build",
-       ...
-     }
 }
